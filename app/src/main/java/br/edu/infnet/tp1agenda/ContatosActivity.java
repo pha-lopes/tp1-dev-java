@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.infnet.tp1agenda.DAO.ContatoDAO;
@@ -42,36 +41,6 @@ public class ContatosActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mLvwContatos.setAdapter(new ContatoAdapter(getApplicationContext(), contatos));
-    }
-
-    private String listToString(List<Contato> contatos){
-        StringBuilder strContatos = new StringBuilder();
-
-        for(Contato contato : contatos){
-            strContatos.append(contato.getNome()+";");
-            strContatos.append(contato.getTelefone()+";");
-            strContatos.append(contato.getEmail()+";");
-            strContatos.append(contato.getCidade()+"|");
-        }
-
-        return strContatos.toString().substring(strContatos.length()-1);
-    }
-
-    private List<Contato> stringToList(String strContatos){
-        List<Contato> contatos = new ArrayList<>();
-
-        String[] arrStrContatos = strContatos.split("|");
-        for(String contato : arrStrContatos){
-            String[] arrContato = contato.split(";");
-            contatos.add(new Contato(
-                    arrContato[0],
-                    arrContato[1],
-                    arrContato[2],
-                    arrContato[3]
-            ));
-        }
-
-        return contatos;
     }
 
     private void returnEmpty(Context contexto){
