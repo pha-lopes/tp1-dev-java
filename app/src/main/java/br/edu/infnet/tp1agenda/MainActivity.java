@@ -1,18 +1,37 @@
 package br.edu.infnet.tp1agenda;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
 import br.edu.infnet.tp1agenda.DAO.ContatoDAO;
 import br.edu.infnet.tp1agenda.contato.Contato;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ContatoDAO contatoDAO = new ContatoDAO();
+    private Contato contato;
+
+    private static final int REQUEST_WRITE_PERMISSIONS_CODE = 42;
 
     private EditText mNome, mTelefone, mEmail, mCidade;
     private TextView mTxtAlerta;
@@ -41,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             mBtnSalvar.setVisibility(View.INVISIBLE);
 
             TextView title = findViewById(R.id.main_title);
-            title.setText("Contato");
+            title.setText(R.string.main_alternative_title);
 
             Contato contato = (Contato) intent.getSerializableExtra("contato");
             mNome.setText(contato.getNome());
@@ -91,8 +110,10 @@ public class MainActivity extends AppCompatActivity {
                 mTxtAlerta.setText(EMPTY_FIELD);
             } else {
 
-                ContatoDAO contatoDAO = new ContatoDAO();
-                contatoDAO.salvar(new Contato(nome, telefone, email, cidade));
+                /*ContatoDAO contatoDAO = new ContatoDAO();
+                contatoDAO.salvar(new Contato(nome, telefone, email, cidade));*/
+                contato = new Contato(nome, telefone, email, cidade);
+                verificaSePodeEscreverDados();
             }
 
         }
@@ -105,5 +126,59 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
+    //PERMISSÃO PARA ESCRITA
+    //Tutorial utilizado para construção:
+    //https://o7planning.org/en/10541/android-external-storage-tutorial
+    private void verificaSePodeEscreverDados() {
+        boolean podeEscrever = this.solicitaPermissao(REQUEST_WRITE_PERMISSIONS_CODE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //
+        if (podeEscrever) {
+            contatoDAO.salvar(contato);
+        }
+    }
+
+    // No Android Level >= 23, tem que pedir ao usuário por permissão
+    // com o dispositivo
+    private boolean solicitaPermissao(int requestId, String nomePermissao) {
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+
+            // Verifica se há permissão
+            int permissao = ActivityCompat.checkSelfPermission(this, nomePermissao);
+
+
+            if (permissao != PackageManager.PERMISSION_GRANTED) {
+                // Solicita permissão
+                this.requestPermissions(
+                        new String[]{nomePermissao},
+                        requestId
+                );
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Quando tem o resultado da requisição
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //
+        // Nota: Se a requisição for cancelada, o array retorna vazio
+        if (grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if(contatoDAO.salvar(contato)){
+                    Toast.makeText(getApplicationContext(), "Contato Salvo", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Ocorreu um Erro", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), "Permissão Cancelada!", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }

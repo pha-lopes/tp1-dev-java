@@ -9,4 +9,5 @@
     <string name="string_btn_view_contact">Visualizar Contatos</string>
     <string name="string_title_contact_register">Registro de Contato</string>
     <string name="placeholder_nome">Nome</string>
+    <string name="main_alternative_title">Contato</string>
 </resources>
