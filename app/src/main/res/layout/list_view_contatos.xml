@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/default_padding">
+
+    <TextView
+        android:id="@+id/txt_nome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/contact_name_size"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:text="@string/placeholder_nome"
+        />
+
+    <!--<LinearLayout
+        android:id="@+id/contato_info_adicional"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:visibility="invisible"
+        >
+
+        <TextView
+            android:id="@+id/txt_telefone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="21 989789123"
+            />
+
+        <TextView
+            android:id="@+id/txt_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="email@exemplo.com"
+            />
+
+        <TextView
+            android:id="@+id/txt_cidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rio de Janeiro"
+            />
+
+    </LinearLayout>-->
+
+</LinearLayout>

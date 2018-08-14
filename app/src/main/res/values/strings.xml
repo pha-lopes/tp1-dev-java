@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Agenda Contatos</string>
+    <string name="string_name">Nome</string>
+    <string name="string_phone">Telefone</string>
+    <string name="string_email">E-mail</string>
+    <string name="string_city">Cidade</string>
+    <string name="string_btn_clear">Limpar</string>
+    <string name="string_btn_save">Salvar</string>
+    <string name="string_btn_view_contact">Visualizar Contatos</string>
+    <string name="string_title_contact_register">Registro de Contato</string>
+    <string name="placeholder_nome">Nome</string>
+</resources>
